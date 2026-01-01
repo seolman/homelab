@@ -1,0 +1,35 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg:
+      - iptables
+      - curl
+
+- name: Check raspberry os
+  ansible.builtin.command: grep "Rasp" /proc/cpuinfo
+  register: k3s_raspberry_check
+  failed_when: false
+  changed_when: false
+
+- name: Set fact
+  ansible.builtin.set_fact:
+    k3s_raspberry_is_pi: "{{ k3s_raspberry_check.rc == 0 }}"
+
+- name: Check cmdline
+  ansible.builtin.stat:
+    path: /boot/firmware/cmdline.txt
+  register: k3s_raspberry_cmdline_txt
+  when: k3s_raspberry_is_pi
+
+- name: Replace cmdline.txt
+  ansible.builtin.replace:
+    path: /boot/firmware/cmdline.txt
+    regexp: '^([\w](?!.*\b{{ cgroup_item }}\b).*)$'
+    replace: '\1 {{ cgroup_item }}'
+  with_items:
+    - "cgroup_memory=1"
+    - "cgroup_enable=memory"
+  loop_control:
+    loop_var: cgroup_item
+  when: k3s_raspberry_is_pi and k3s_raspberry_cmdline_txt.stat.exists
+  notify: Reboot

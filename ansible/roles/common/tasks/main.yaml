@@ -1,0 +1,15 @@
+---
+- name: Update and upgrade
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    autoclean: true
+    autoremove: true
+
+- name: Install packages
+  ansible.builtin.apt:
+    pkg:
+      - iptables
+      - curl
+      - python3-pip
+      - open-iscsi

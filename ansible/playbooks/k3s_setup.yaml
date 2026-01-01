@@ -1,0 +1,29 @@
+---
+- name: Pre Requirements
+  hosts: k3s_cluster
+  become: true
+  roles:
+    - k3s_raspberry
+
+- name: Setup master nodes
+  hosts: k3s_masters
+  become: true
+  roles:
+    - k3s_master
+
+- name: Setup worker nodes
+  hosts: k3s_workers
+  become: true
+  roles:
+    - k3s_worker
+
+- name: Bootstrap add-ons
+  hosts: k3s_masters
+  become: false
+  gather_facts: false
+  roles:
+    - argocd
+    # - metallb
+    # - longhorn
+    # - traefik
+    # - cert_manager

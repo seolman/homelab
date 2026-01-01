@@ -1,0 +1,12 @@
+---
+- name: Install argo-cd
+  kubernetes.core.helm:
+    name: argocd
+    namespace: argocd
+    create_namespace: true
+    chart_ref: oci://ghcr.io/argoproj/argo-helm/argo-cd
+    chart_version: 9.2.3
+    state: present
+    wait: true
+  run_once: true
+  delegate_to: localhost

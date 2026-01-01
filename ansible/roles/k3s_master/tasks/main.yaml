@@ -1,0 +1,63 @@
+---
+- name: Init master node
+  when: inventory_hostname == groups["k3s_masters"][0]
+  block:
+  - name: Install k3s master
+    ansible.builtin.shell:
+      cmd: curl -sfL https://get.k3s.io | sh -s - server --cluster-init --disable servicelb --disable traefik --token {{ k3s_token }} --tls-san {{ k3s_vip }}
+    changed_when: false
+
+  - name: Apply kube-vip rbac
+    ansible.builtin.shell:
+      cmd: kubectl apply -f https://kube-vip.io/manifests/rbac.yaml
+    changed_when: false
+
+  - name: Install kube-vip
+    ansible.builtin.shell:
+      cmd: ctr image pull ghcr.io/kube-vip/kube-vip:latest; ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:latest vip /kube-vip manifest daemonset --address {{ k3s_vip }} --inCluster --taint --controlplane --arp --leaderElection | tee /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
+    changed_when: false
+
+- name: Install k3s master
+  when: inventory_hostname != groups["k3s_masters"][0]
+  ansible.builtin.shell:
+    cmd: curl -sfL https://get.k3s.io | sh -s - server --disable servicelb --disable traefik --token {{ k3s_token }} --tls-san {{ k3s_vip }} --server https://{{ k3s_vip }}:6443
+  changed_when: false
+
+- name: Mkdir kubeconfig
+  ansible.builtin.file:
+    dest: "/home/{{ ansible_user }}/.kube/"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+    state: directory
+
+- name: Copy kubeconfig
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ k3s_kubeconfig }}"
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0655"
+  run_once: true
+
+- name: Configure default KUBECONFIG for user
+  ansible.builtin.lineinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    regexp: "export KUBECONFIG=~/.kube/config"
+    line: "export KUBECONFIG=~/.kube/config # Added by ansible"
+    state: present
+
+- name: Fetch kubeconfig
+  ansible.builtin.fetch:
+    src: "/home/{{ ansible_user }}/.kube/config"
+    dest: ~/.kube/config
+    flat: true
+  run_once: true
+
+- name: Replace kubeconfig
+  ansible.builtin.replace:
+    path: "/home/{{ ansible_user }}/.kube/config"
+    regexp: "server: https://127.0.0.1:6443"
+    replace: "server: https://{{ k3s_vip }}:6443"
+  delegate_to: localhost
