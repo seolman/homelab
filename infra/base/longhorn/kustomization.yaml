@@ -7,3 +7,4 @@ helmCharts:
     version: 1.10.1
     releaseName: longhorn
     namespace: longhorn-system
+    valuesFile: ./value.yaml
