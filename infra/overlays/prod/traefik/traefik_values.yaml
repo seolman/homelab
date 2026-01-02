@@ -1,5 +1,2 @@
 deployment:
   replicas: 2
-providers:
-  kubernetesCRD:
-    enabled: true
