@@ -8,9 +8,9 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-    repoURL: https://github.com/seolman/homelab.git
-    revision: HEAD
-    directories:
+      repoURL: https://github.com/seolman/homelab.git
+      revision: HEAD
+      directories:
       - path: infra/overlays/prod/*
   template:
     metadata:
