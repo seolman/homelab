@@ -1,0 +1,29 @@
+---
+- name: Add traefik chart repo
+  kubernetes.core.helm_repository:
+    name: traefik
+    repo_url: "https://traefik.github.io/charts"
+    state: present
+  delegate_to: localhost
+  run_once: true
+
+- name: Install traefik helm chart
+  kubernetes.core.helm:
+    name: traefik
+    chart_ref: traefik/traefik
+    release_namespace: traefik-system
+    create_namespace: true
+    state: present
+    wait: true
+    values:
+      deployment:
+        replicas: 2
+      ports:
+        web:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
+  delegate_to: localhost
+  run_once: true

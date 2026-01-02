@@ -1,0 +1,53 @@
+---
+- name: Add metallb helm
+  kubernetes.core.helm_repository:
+    name: metallb
+    repo_url: https://metallb.github.io/metallb
+    state: present
+    # kubeconfig: "{{ k3s_kubeconfig }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Install metallb
+  kubernetes.core.helm:
+    name: metallb
+    namespace: metallb-system
+    create_namespace: true
+    chart_ref: metallb/metallb
+    state: present
+    wait: true
+    # kubeconfig: "{{ k3s_kubeconfig }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Configure ip address pool
+  kubernetes.core.k8s:
+    state: present
+    # kubeconfig: "{{ k3s_kubeconfig }}"
+    definition:
+      apiVersion: metallb.io/v1beta1
+      kind: IPAddressPool
+      metadata:
+        name: main-pool
+        namespace: metallb-system
+      spec:
+        addresses:
+          - 192.168.8.50-192.168.8.99
+  delegate_to: localhost
+  run_once: true
+
+- name: Configure l2 advertisement
+  kubernetes.core.k8s:
+    state: present
+    # kubeconfig: "{{ k3s_kubeconfig }}"
+    definition:
+      apiVersion: metallb.io/v1beta1
+      kind: L2Advertisement
+      metadata:
+        name: l2-adv
+        namespace: metallb-system
+      spec:
+        ipAddressPools:
+          - main-pool
+  delegate_to: localhost
+  run_once: true
