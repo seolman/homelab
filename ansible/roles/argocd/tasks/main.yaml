@@ -1,4 +1,3 @@
----
 - name: Install argo-cd
   kubernetes.core.helm:
     name: argocd
@@ -8,5 +7,9 @@
     chart_version: 9.2.3
     state: present
     wait: true
+    values:
+      configs:
+        cm:
+          kustomize.buildOptions: "--enable-helm"
   run_once: true
   delegate_to: localhost
