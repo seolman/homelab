@@ -7,11 +7,11 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    - git:
-      repoURL: https://github.com/seolman/homelab.git
-      revision: HEAD
-      directories:
-        - path: infra/overlays/prod/*
+  - git:
+    repoURL: https://github.com/seolman/homelab.git
+    revision: HEAD
+    directories:
+      - path: infra/overlays/prod/*
   template:
     metadata:
       name: "{{.path.basename}}-app"
