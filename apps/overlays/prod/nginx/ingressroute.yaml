@@ -6,8 +6,8 @@ spec:
   entryPoints:
     - web
   routes:
-    - kind: Rule
-      match: Host(`nginx.local`)
-      services:
-        - name: nginx-service
-          port: 80
+  - kind: Rule
+    match: Host(`nginx.homelab.local`)
+    services:
+    - name: nginx-service
+      port: 80
