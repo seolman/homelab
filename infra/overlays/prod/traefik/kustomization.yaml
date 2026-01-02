@@ -7,4 +7,3 @@ helmCharts:
     version: 38.0.1
     releaseName: traefik
     namespace: traefik-system
-    valuesFile: ./traefik_values.yaml
