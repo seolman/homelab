@@ -1,4 +1,4 @@
 deployment:
   replicas: 2
 env:
-  - --skip-crds
+  - "--skip-crds"
