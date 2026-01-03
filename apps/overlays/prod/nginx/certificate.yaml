@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: nginx-seolman-dev-tls
   issuerRef:
-    name: cloudflare-issuer
+    name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: nginx.seolman.dev
   dnsNames:
