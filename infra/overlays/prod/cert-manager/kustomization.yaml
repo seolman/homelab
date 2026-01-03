@@ -5,3 +5,4 @@ namespace: cert-manager
 
 resources:
   - ../../../base/cert-manager
+  - ./cluster_issuer.yaml

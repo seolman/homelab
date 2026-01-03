@@ -23,3 +23,5 @@ Traefik
 Longhorn
 
 ArgoCD
+
+Cert-manager
