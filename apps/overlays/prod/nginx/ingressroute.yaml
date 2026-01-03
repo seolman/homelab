@@ -5,9 +5,12 @@ metadata:
 spec:
   entryPoints:
     - web
+    - websecure
   routes:
     - kind: Rule
-      match: Host(`nginx.homelab.local`)
+      match: Host(`nginx.seolman.dev`)
       services:
         - name: nginx-service
           port: 80
+  tls:
+    secretName: nginx-seolman-dev-tls
