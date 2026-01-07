@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ../../../base/argocd
   - ./ingressroute.yaml
+  - ./certificate.yaml
