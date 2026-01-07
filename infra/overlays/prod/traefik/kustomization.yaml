@@ -5,3 +5,5 @@ namespace: traefik-system
 
 resources:
   - ../../../base/traefik
+  - ./ingressroute.yaml
+  - ./certificate.yaml

@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingressroute
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`traefik.seolman.dev`)
+      services:
+        - name: api@internal
+          kind: TraefikService
+      # TODO auth middleware
+  tls:
+    secretName: traefik-tls
