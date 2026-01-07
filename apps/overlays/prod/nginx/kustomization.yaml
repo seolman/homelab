@@ -6,4 +6,3 @@ namespace: nginx-test
 resources:
   - ../../../base/nginx
   - ./ingressroute.yaml
-  - ./certificate.yaml
