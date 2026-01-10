@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../base/postgresql
+  - ./namespace.yaml
   - ./clusters.yaml
 
 helmCharts:
