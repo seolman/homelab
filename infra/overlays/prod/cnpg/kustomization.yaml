@@ -5,7 +5,7 @@ resources:
   - ../../../base/cnpg
   - ./cnpg.yaml
   - ./namespace.yaml
-  - ./clusters.yaml
+  # - ./clusters.yaml
 
 # helmCharts:
 #   - name: cloudnative-pg
