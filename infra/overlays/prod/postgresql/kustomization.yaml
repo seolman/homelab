@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../../../base/postgresql
   - ./namespace.yaml
-  # - ./clusters.yaml
+  - ./clusters.yaml
 
 helmCharts:
   - name: cloudnative-pg
