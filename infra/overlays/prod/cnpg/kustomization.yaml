@@ -3,14 +3,13 @@ kind: Kustomization
 
 resources:
   - ../../../base/cnpg
-  - ./cnpg.yaml
   - ./namespace.yaml
   - ./clusters.yaml
 
-# helmCharts:
-#   - name: cloudnative-pg
-#     repo: https://cloudnative-pg.io/charts/
-#     version: 0.27.0
-#     releaseName: cloudnative-pg
-#     namespace: cnpg-system
-#     includeCRDs: true
+helmCharts:
+  - name: cloudnative-pg
+    repo: https://cloudnative-pg.io/charts/
+    version: 0.27.0
+    releaseName: cloudnative-pg
+    namespace: cnpg-system
+    includeCRDs: true
