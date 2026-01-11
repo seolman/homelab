@@ -11,3 +11,4 @@ helmCharts:
     releaseName: minio
     namespace: minio-system
     includeCRDs: true
+    valuesFile: ./values.yaml
