@@ -5,9 +5,8 @@ resources:
   - ../../../base/minio
 
 helmCharts:
-  - name: minio
-    repo: https://charts.bitnami.com/bitnami
-    version: 17.0.21
+  - name: operator
+    repo: https://operator.min.io/
     releaseName: minio
     namespace: minio-system
     includeCRDs: true
