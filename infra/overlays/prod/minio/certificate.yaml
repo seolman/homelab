@@ -13,3 +13,4 @@ spec:
   commonName: minio.seolman.dev
   dnsNames:
     - minio.seolman.dev
+    - s3.minio.seolman.dev

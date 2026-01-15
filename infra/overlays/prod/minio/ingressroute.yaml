@@ -13,13 +13,11 @@ spec:
       match: Host(`minio.seolman.dev`)
       services:
         - name: main-tenant-console
-          port: 9443
-          scheme: https
+          port: 9090
     - kind: Rule
       match: Host(`s3.minio.seolman.dev`)
       services:
         - name: minio
-          port: 443
-          scheme: https
+          port: 80
   tls:
     secretName: minio-tls
