@@ -1,0 +1,22 @@
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: main-tenant
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  pools:
+    - servers: 4
+      name: main-pool
+      volumesPerServer: 1
+      volumeClaimTemplate:
+        apiVersion: v1
+        kind: persistentvolumeclaims
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: longhorn

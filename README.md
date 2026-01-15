@@ -25,3 +25,7 @@ Longhorn
 ArgoCD
 
 Cert-manager
+
+CloudNative-pg
+
+Minio
