@@ -4,7 +4,7 @@ metadata:
   name: main-tenant
   namespace: database
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   users:
     - name: storage-user
@@ -12,7 +12,7 @@ spec:
     name: storage-configuration
   pools:
     - servers: 4
-      name: main-pool
+      name: pool
       volumesPerServer: 1
       volumeClaimTemplate:
         apiVersion: v1
