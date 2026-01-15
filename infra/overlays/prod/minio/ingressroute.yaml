@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: minio-ingressroute
+  namespace: database
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`minio.seolman.dev`)
+      services:
+        - name: main-tenant-console
+          port: 9443
+  tls:
+    secretName: minio-tls

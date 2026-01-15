@@ -6,6 +6,8 @@ resources:
   - ./sealed_user.yaml
   - ./sealed_configuration.yaml
   - ./tenant.yaml
+  - ./certificate.yaml
+  - ./ingressroute.yaml
 
 helmCharts:
   - name: operator

@@ -16,7 +16,7 @@ spec:
       volumesPerServer: 1
       volumeClaimTemplate:
         apiVersion: v1
-        kind: persistentvolumeclaims
+        kind: PersistentVolumeClaims
         spec:
           accessModes:
             - ReadWriteOnce
