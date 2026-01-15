@@ -6,6 +6,10 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  users:
+    - name: storage-user
+  configuration:
+    name: storage-configuration
   pools:
     - servers: 4
       name: main-pool

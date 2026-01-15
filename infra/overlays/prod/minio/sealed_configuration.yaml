@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: storage-configuration
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  encryptedData:
+    config.env: AgC1UG1up/Qw3XMjEBnziIOMCtw547WziK5IRxUAGi23P9Wh4cGOpRPKrzDIjrAEtrba6vl0SbYXBAtWQcT4LzHQCq0+V4q0C1RF+rXDDleb/1HXKrZlIb2rFjJLM3xkWSMlqPfqZ1NPNtrD5Pce0fY7Bzzayh1r/6RTZg0P/sySU9ZovFazojCfnEKlnMuR9bij9O5uFRUp/loW8D2hhZzsMqJeGnlxu4grGRQKzn9kTXQGMhcNU8xWDf/yqJEar5EPUUt1Q6dRBs6RCQxVguTntissKuO0LfTImfnELs3lKc25bu4D5yLxg4hsOvCTnVV9lszTirD0gbAFA8t1Z0Regzh2MpYY/ownS1h4d5piQL6sorCv0S1PkpxEDtvjZRtE/lKR1tpQVr+ZwxD/QF1CoxO0lCEVg94fKuHoJNzd9OiuL415hcmp/8kRaxUxUSxabqFintm/UiKVjjv8KMtxejTRJ7HXd8LK4x00UKDs7yeVW2VL/Wgf5gMbTb9/tAioSScQ1BDhgLB+FeAuAHPrbC7yXK2DLA2wgqYA6JEzL2nBWHa8vI4Q1YDxpc9Cm+belWYmNkVtM/Lo3WvC+YmO6hyXa8KoGfZwECztWY+uxZ9GbSrfp9bQqTzzqkxhWRKwISY3445iHAhW6/gSWaMtIx287r08AYMoI0vQ6w7Kzn7xXX7LVw3PedyAwtXxOIhRRvGmm0kaIVGoSbrpuKLuZokHcg0uc4dR7crc2lVWOEshdMJllXyCh5ZvF5XPwhIjXlP2DcoiFgHf1YZW47uyynq9mHfYY7gIuFcKb2NAEFc91jQFnJcdB+HMRG55uKucn7F8RRN3m6YdIjUCagEU+/AiIHKIzQUjENpupFzE6eXxy0LhDPokog==
+  template:
+    metadata:
+      name: storage-configuration
+      namespace: database
+    type: Opaque

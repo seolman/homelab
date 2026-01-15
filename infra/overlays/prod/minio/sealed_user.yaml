@@ -1,0 +1,17 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: storage-user
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  encryptedData:
+    CONSOLE_ACCESS_KEY: AgBrx/0/cqXCKp5GtnSBfkw4O2vZncRc0mjv85qV6bWfO/dCD/FqtVAlcMKYGbgngvKKlBr4/NGNyWKsiYWfKjdBIkKqu/I8jl8hB7pzuvPdOuXT7xjM+/XcDye75RJlzSrg7lRq6dG/U9QlfkkLbzywEI9s5EchGX+aZOjndXENij+geGn/+4foZfKHfdOrEmOJ25VouJhnIyZpsOQyygHp03yM7cCQDQN5MbJglG16oQ3eDpYpCHzl6xZHUT4MGNzZnxKu+W7BJ9i6kBbm2nFDpcaEAsqKO74vj52GTpI3iGTTFom9RMLWKzS4NXdzd1+dtLlgwehYafy2ssBfHcUY77ygoI6BYmqZ+9vaRuqEYvnEBeQqCg1a2slkK5nQeLI35lkWgi70dXGXgOh8Ziuny3i0nke72lE/duimzNZRF9ZREKpyd8z1fAJo/gJpdHwlBMYSNhdSR8LqQsQWtoPYHzq9mGlPLK6GQXpQKHMJ0o8lKF5sU+FGGLpycNY3AgyDmRikfLULfz/eO4r2s6ILOrWMmuubqAJVy+VHuLK3JskjEge//vS50p6Cy02HVZUSkWtAP8nfxG45N7BAT54NoUgDiO+DungAlg7OZCc9ByQvSMMncg1RzvCgsAYJWUhHBSaTA72OGlfxjnSEYTUZQOVWkpAsGlUg/LaRpQZatFQRWuP6xMAp4owq15D8WypBYKGxU/6C
+    CONSOLE_SECRET_KEY: AgBuuT398kkM+RfRef6lnqg/Hk/16k3O46uW0yoxFXbRAbWsgr8KB/C+l732OSXm50bUFA/+SWIlVPmtY3GOfjCBZgjkjzwGDPNS+U2bM0P8z5IXR4wZMxa+L/xwm7x3GXgO5NyElow1WwIMTg/XF6oiLvO/D/JA7LrCxdrg+0Mq+42GUYUHZkeQnMrrWrwX2jmnHY5cmBmtpPanNJJ2AQvVh1txWV8JjzGiYG3Ks44v/NVt9AFuKxkfYWWxsMqjJjELiBkPm7CQiNyHmCnmISHAvDmB/SLH2n0fxZO3gCfJhCf6Shra+5WW7z9xLS4vOpXtx/UJf7xhAEZ8B4RHnIMKuJ34mCSBxtTtXZJTm2dW10632mMp0q/3Si1DeAj6KolEObmgvBmbUestkaPkWyT1+Hfw9Qzoxx2pmw2TLtYvv5HqkTVW2XQjyoegPaKVh4Lxam+UZ5vdA4JcfLxg67Gl9f/bvNTpNyQEPT1ARTNUIJuabpfr7Qp48RC/V7z7FPBR59kR6hWWcFEYBPRo/gBlv+mZ4MX9CrOsHPHYCSqgNQQAwv5tr7Qo0SJP6DRzPTxO2IEeB965lp2lw0VSHs5vKmIXjATK904hyUiy2sA1w7HkRxNsfpC8gGZYVqT66hFxLQaBGwXOlBqaZA4gb4yIbwMhkzn2uxbcoWkHI8PLWtL9aSj/foERFeuqfOgFcds7+fEw+Pd3itAS
+  template:
+    metadata:
+      name: storage-user
+      namespace: database
+    type: Opaque

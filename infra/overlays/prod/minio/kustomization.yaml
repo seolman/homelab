@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../../base/minio
+  - ./sealed_user.yaml
+  - ./sealed_configuration.yaml
   - ./tenant.yaml
 
 helmCharts:
