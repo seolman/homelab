@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: minio-ingressroute
   namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   entryPoints:
     - websecure
@@ -12,5 +14,10 @@ spec:
       services:
         - name: main-tenant-console
           port: 9443
+    - kind: Rule
+      match: Host(`s3.minio.seolman.dev`)
+      services:
+        - name: main-tenant
+          port: 9000
   tls:
     secretName: minio-tls

@@ -3,6 +3,8 @@ kind: Certificate
 metadata:
   name: minio-cert
   namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   secretName: minio-tls
   issuerRef:
