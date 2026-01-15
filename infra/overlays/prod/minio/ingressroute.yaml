@@ -14,10 +14,12 @@ spec:
       services:
         - name: main-tenant-console
           port: 9443
+          scheme: https
     - kind: Rule
       match: Host(`s3.minio.seolman.dev`)
       services:
         - name: minio
           port: 443
+          scheme: https
   tls:
     secretName: minio-tls
