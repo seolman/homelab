@@ -16,7 +16,7 @@
 - [Suptronics X1012-V1.2](https://suptronics.com/Raspberrypi/Storage/x1012-v1.2.html)
 - [ipTIME PoE802]()
 - [Gigabit Poe Splitter]()
-- [GL-INet Beryl AX](), 150000
+- [GL-INet Beryl AX]()
 - [Server Tap HDSVAL-14]()
 - [JetKVM]()
 
