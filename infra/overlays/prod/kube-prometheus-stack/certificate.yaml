@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: grafana-tls
   issuerRef:
-    name: cloudflare-issuer
+    name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: grafana.seolman.dev
   dnsNames:
