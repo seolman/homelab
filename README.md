@@ -14,6 +14,8 @@
 
 ## 🏗 Architecture
 
+![homelab architecture](./assets/homelab_architecture.png)
+
 ### 1. Infrastructure Layer
 - **Orchestration**: K3s (Lightweight Kubernetes)
 - **HA Management**: kube-vip (Virtual IP for Control Plane)
