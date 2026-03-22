@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../../base/kube-prometheus-stack
+  - certificate.yaml
+  - ingressroute.yaml
 
 helmCharts:
   - name: kube-prometheus-stack
