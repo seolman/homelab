@@ -14,7 +14,7 @@
 
 ## 🏗 Architecture
 
-![homelab architecture](./assets/homelab_architecture.png)
+<!-- ![homelab architecture](./assets/homelab_architecture.png) -->
 
 ### 1. Infrastructure Layer
 - **Orchestration**: K3s (Lightweight Kubernetes)
