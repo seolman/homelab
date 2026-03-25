@@ -6,8 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
-  users:
-    - name: storage-user
   configuration:
     name: storage-configuration
   requestAutoCert: false
