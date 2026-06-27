@@ -1,0 +1,26 @@
+name: "CI-CD Standard Pipeline"
+
+on:
+  push:
+    branches: [ "main", "v2" ]
+  pull_request:
+    branches: [ "main", "v2" ]
+
+jobs:
+  health-check:
+    name: "Infrastructure Health Check"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout Codebase"
+        uses: actions/checkout@v4
+
+      - name: "Execute System Health Check"
+        run: |
+          echo "========================================="
+          uptime
+          date
+          lsblk
+          df -h
+          free -h
+          echo "========================================="
