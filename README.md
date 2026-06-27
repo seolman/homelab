@@ -8,7 +8,7 @@ homelab
 │   ├───inventory
 │   ├───playbooks
 │   └───roles
-├───gitops
+├───kubernetes
 │   ├───apps
 │   ├───assets
 │   ├───clusters
