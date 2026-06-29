@@ -28,10 +28,18 @@ provider "b2" {
 }
 
 provider "oci" {
-  alias = "seoul"
   tenancy_ocid = var.oci_tenancy_ocid
   user_ocid = var.oci_user_ocid
   fingerprint = var.oci_fingerprint
   private_key = var.oci_private_key
   region = var.oci_region
+}
+
+provider "oci" {
+  alias = "seoul"
+  tenancy_ocid = var.oci_tenancy_ocid
+  user_ocid = var.oci_user_ocid
+  fingerprint = var.oci_fingerprint
+  private_key = var.oci_private_key
+  region = "ap-seoul-1"
 }
