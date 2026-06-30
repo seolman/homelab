@@ -30,6 +30,21 @@ resource "oci_core_vcn" "homelab_prd_vcn" {
   freeform_tags = local.common_tags
 }
 
+# output "default_route" {
+#   value = oci_core_vcn.homelab_prd_vcn.default_route_table_id
+# }
+
+resource "oci_core_internet_gateway" "homelab_prd_igw" {
+  provider = oci.seoul
+  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
+  vcn_id = oci_core_vcn.homelab_prd_vcn.id
+
+  display_name = "homelab-prd-igw"
+  enabled = true
+  freeform_tags = local.common_tags
+  route_table_id = oci_core_vcn.homelab_prd_vcn.default_route_table_id
+}
+
 resource "oci_core_subnet" "homelab_prd_pubsub" {
   provider = oci.seoul
   cidr_block = "192.168.5.0/24"
