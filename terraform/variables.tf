@@ -10,5 +10,8 @@ variable "oci_tenancy_ocid" { type = string }
 variable "oci_user_ocid" { type = string }
 variable "oci_fingerprint" { type = string }
 variable "oci_private_key" { type = string }
-variable "oci_region" { type = string }
+variable "oci_region" { 
+  type = string
+  default = "ap-seoul-1"
+}
 # variable "oci_oracle_linux_10_aarch" { type = string }
