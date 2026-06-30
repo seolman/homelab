@@ -36,10 +36,10 @@ provider "oci" {
 }
 
 provider "oci" {
-  alias = "seoul"
+  alias = "osaka"
   tenancy_ocid = var.oci_tenancy_ocid
   user_ocid = var.oci_user_ocid
   fingerprint = var.oci_fingerprint
   private_key = var.oci_private_key
-  region = "ap-seoul-1"
+  region = "ap-osaka-1"
 }

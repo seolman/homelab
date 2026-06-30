@@ -8,11 +8,11 @@ data "proxmox_virtual_environment_nodes" "my_nodes" {}
 
 # oci
 data "oci_identity_availability_domains" "seoul_ads" {
-  provider = oci.seoul
   compartment_id = var.oci_tenancy_ocid
 }
 
 resource "oci_identity_compartment" "homelab_prd_compartment" {
+  provider = oci.osaka
   compartment_id = var.oci_tenancy_ocid
   name = "homelab-prd"
   description = "managed by terraform"
@@ -21,7 +21,6 @@ resource "oci_identity_compartment" "homelab_prd_compartment" {
 }
 
 resource "oci_core_vcn" "homelab_prd_vcn" {
-  provider = oci.seoul
   compartment_id = oci_identity_compartment.homelab_prd_compartment.id
   cidr_blocks = [ "192.168.0.0/16" ]
 
@@ -30,23 +29,29 @@ resource "oci_core_vcn" "homelab_prd_vcn" {
   freeform_tags = local.common_tags
 }
 
-# output "default_route" {
-#   value = oci_core_vcn.homelab_prd_vcn.default_route_table_id
-# }
-
 resource "oci_core_internet_gateway" "homelab_prd_igw" {
-  provider = oci.seoul
   compartment_id = oci_identity_compartment.homelab_prd_compartment.id
   vcn_id = oci_core_vcn.homelab_prd_vcn.id
 
   display_name = "homelab-prd-igw"
   enabled = true
   freeform_tags = local.common_tags
-  route_table_id = oci_core_vcn.homelab_prd_vcn.default_route_table_id
+}
+
+resource "oci_core_route_table" "homelab_prd_rt" {
+  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
+  vcn_id = oci_core_vcn.homelab_prd_vcn.id
+
+  display_name = "homelab-prd-rt"
+  freeform_tags = local.common_tags
+  route_rules {
+    destination = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+    network_entity_id = oci_core_internet_gateway.homelab_prd_igw.id
+  }
 }
 
 resource "oci_core_subnet" "homelab_prd_pubsub" {
-  provider = oci.seoul
   cidr_block = "192.168.5.0/24"
   vcn_id = oci_core_vcn.homelab_prd_vcn.id
 
@@ -55,12 +60,11 @@ resource "oci_core_subnet" "homelab_prd_pubsub" {
   display_name = "homelab-prd-pubsub"
   dns_label = "pubsub"
   security_list_ids = [oci_core_vcn.homelab_prd_vcn.default_security_list_id]
-  route_table_id = oci_core_vcn.homelab_prd_vcn.default_route_table_id
+  route_table_id = oci_core_route_table.homelab_prd_rt.id
   freeform_tags = local.common_tags
 }
 
 resource "oci_core_instance" "homelab_prd_vm" {
-  provider = oci.seoul
   availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
   compartment_id = oci_identity_compartment.homelab_prd_compartment.id
 
@@ -72,7 +76,7 @@ resource "oci_core_instance" "homelab_prd_vm" {
   }
   source_details {
     source_type = "image"
-    source_id = local.oci_oracle_linux_10_aarch_source_id
+    source_id = local.oci_rocky_linux_9_aarch_source_id
     boot_volume_size_in_gbs = 200
   }
   create_vnic_details {
@@ -81,19 +85,7 @@ resource "oci_core_instance" "homelab_prd_vm" {
   }
   metadata = {
     ssh_authorized_keys = var.my_public_key
-    user_data = base64encode(<<EOF
-    #cloud-config
-    package_update = true
-    packages:
-      - neovim
-      - git
-      - fail2ban
-    runcmd:
-      - systemctl enable --now fail2ban
-      - echo "complete" > /etc/motd
-    EOF
-  )
-}
+  }
   freeform_tags = local.common_tags
 }
 
