@@ -16,11 +16,11 @@ terraform {
   }
 }
 
-# provider "proxmox" {
-#   endpoint = var.ve_endpoint
-#   api_token = var.ve_api_token
-#   insecure = true
-# }
+provider "proxmox" {
+  endpoint = var.ve_endpoint
+  api_token = var.ve_api_token
+  insecure = true
+}
 
 provider "b2" {
   application_key = var.b2_application_key
