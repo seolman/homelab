@@ -1,6 +1,15 @@
 # proxmox
 data "proxmox_virtual_environment_nodes" "my_nodes" {}
 
+resource "proxmox_node_config" "pve3_note" {
+  node_name = "pve3"
+
+  description = trimspace(<<-EOT
+  # Backup Node
+  EOT
+  )
+}
+
 resource "proxmox_virtual_environment_group" "admin_group" {
   group_id = "admin"
 
