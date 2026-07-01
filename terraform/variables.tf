@@ -1,4 +1,5 @@
 variable "my_public_key" { type = string }
+variable "seolman_password" { type = string }
 
 variable "ve_endpoint" { type = string }
 variable "ve_api_token" { type = string }

@@ -1,7 +1,30 @@
 # proxmox
 data "proxmox_virtual_environment_nodes" "my_nodes" {}
 
-# TODO user
+resource "proxmox_virtual_environment_group" "admin_group" {
+  group_id = "admin"
+
+  comment = "managed by terraform"
+}
+
+resource "proxmox_acl" "admin_acl" {
+  path = "/"
+  role_id = "Administrator"
+
+  group_id = proxmox_virtual_environment_group.admin_group.id
+  propagate = true
+}
+
+resource "proxmox_virtual_environment_user" "seolman" {
+  user_id  = "seolman@pve"
+
+  comment = "managed by terraform"
+  email = "tjfehdgns@gmail.com"
+  enabled = true
+  groups = [proxmox_virtual_environment_group.admin_group.group_id]
+  password = var.seolman_password
+}
+
 # TODO pbs
 # TODO pms
 # TODO rocky10 template
