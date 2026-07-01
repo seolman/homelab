@@ -1,4 +1,4 @@
-# proxmox
+# INFO proxmox
 data "proxmox_virtual_environment_nodes" "my_nodes" {}
 
 resource "proxmox_node_config" "pve3_note" {
@@ -38,7 +38,7 @@ resource "proxmox_virtual_environment_user" "seolman" {
 # TODO pms
 # TODO rocky10 template
 
-# oci
+# INFO oci
 data "oci_identity_availability_domains" "seoul_ads" {
   compartment_id = var.oci_tenancy_ocid
 }
@@ -56,7 +56,7 @@ resource "oci_core_vcn" "homelab_prd_vcn" {
   compartment_id = oci_identity_compartment.homelab_prd_compartment.id
   cidr_blocks = [ "192.168.0.0/16" ]
 
-  display_name = "homelab-prd-vcn" # INFO
+  display_name = "homelab-prd-vcn"
   dns_label = "homelab"
   freeform_tags = local.common_tags
 }
@@ -121,7 +121,7 @@ resource "oci_core_instance" "homelab_prd_vm" {
   freeform_tags = local.common_tags
 }
 
-# b2
+# INFO b2
 data "b2_account_info" "my_account_info" {}
 
 resource "b2_bucket" "dr_bucket" {
