@@ -1,6 +1,15 @@
 ---
 all:
   children:
+    proxmox:
+      hosts:
+        # pve1:
+        #   ansible_host: 192.168.8.101
+        # pve2:
+        #   ansible_host: 192.168.8.101
+        pve3:
+          ansible_host: 192.168.8.101
+
     k3s_cluster:
       children:
         k3s_masters:
@@ -11,7 +20,9 @@ all:
               ansible_host: 192.168.8.22
             pi3:
               ansible_host: 192.168.8.23
-        k3s_workers:
-          hosts:
-            n100:
-              ansible_host: 192.168.8.10
+
+    oci:
+      hosts:
+        oci-vm:
+          ansible_host: 193.122.102.245
+          ansible_user: rocky
