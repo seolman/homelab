@@ -7,4 +7,5 @@ locals {
     environment = "production"
     managedby = "terraform"
   }
+  common_description = "managed by terraform"
 }

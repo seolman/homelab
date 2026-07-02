@@ -15,4 +15,3 @@ variable "oci_region" {
   type = string
   default = "ap-seoul-1"
 }
-# variable "oci_oracle_linux_10_aarch" { type = string }

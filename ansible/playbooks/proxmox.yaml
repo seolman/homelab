@@ -1,0 +1,16 @@
+---
+- name: proxmox ve post install
+  hosts: proxmox
+  become: true
+  tasks:
+    - name: Download the post-install script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/post-pve-install.sh
+        dest: /tmp/post-pve-install.sh
+        mode: "0755"
+
+    - name: Execute the post-install script
+      ansible.builtin.shell: |
+        bash /tmp/post-pve-install.sh
+      args:
+        creates: /etc/apt/sources.list.d/pve-enterprise.list.bak
