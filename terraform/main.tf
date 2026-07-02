@@ -34,9 +34,77 @@ resource "proxmox_virtual_environment_user" "seolman" {
   password = var.seolman_password
 }
 
+resource "proxmox_download_file" "rocky_linux_10_qcow2_img" {
+  content_type = "import"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
+
+  file_name = "rocky_linux_10.qcow2"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_9_qcow2_img" {
+  content_type = "import"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
+
+  file_name = "rocky_linux_9.qcow2"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
+  content_type = "import"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
+
+  file_name = "rocky_linux_8.qcow2"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_10_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.2-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_10.iso"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_9_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.8-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_9.iso"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_8_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.10-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_8.iso"
+  overwrite = true
+}
+
+# TODO
+# resource "proxmox_virtual_environment_vm" "test_vm" {
+#   node_name = "pve3"
+#
+#   agent {
+#     enabled = true
+#   }
+# }
+
 # TODO pbs
 # TODO pms
-# TODO rocky10 template
 
 # INFO oci
 data "oci_identity_availability_domains" "seoul_ads" {
