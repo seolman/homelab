@@ -24,7 +24,7 @@ resource "proxmox_acl" "admin_acl" {
   propagate = true
 }
 
-resource "proxmox_virtual_environment_user" "seolman" {
+resource "proxmox_virtual_environment_user" "seolman_user" {
   user_id  = "seolman@pve"
 
   comment = "managed by terraform"
@@ -32,6 +32,66 @@ resource "proxmox_virtual_environment_user" "seolman" {
   enabled = true
   groups = [proxmox_virtual_environment_group.admin_group.group_id]
   password = var.seolman_password
+}
+
+resource "proxmox_download_file" "rocky_linux_10_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10-latest-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_10.iso"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_9_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_9.iso"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_8_iso" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8-latest-x86_64-minimal.iso"
+
+  file_name = "rocky_linux_8.iso"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_10_oci_img" {
+  content_type = "vztmpl"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-Container-Base.latest.x86_64.tar.xz"
+
+  file_name = "rocky_linux_10.tar.xz"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_9_oci_img" {
+  content_type = "vztmpl"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-Container-Base.latest.x86_64.tar.xz"
+
+  file_name = "rocky_linux_9.tar.xz"
+  overwrite = true
+}
+
+resource "proxmox_download_file" "rocky_linux_8_oci_img" {
+  content_type = "vztmpl"
+  datastore_id = "local"
+  node_name = "pve3"
+  url = "https://download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-Container-Base.latest.x86_64.tar.xz"
+
+  file_name = "rocky_linux_8.tar.xz"
+  overwrite = true
 }
 
 resource "proxmox_download_file" "rocky_linux_10_qcow2_img" {
@@ -61,36 +121,6 @@ resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
   url = "https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
 
   file_name = "rocky_linux_8.qcow2"
-  overwrite = true
-}
-
-resource "proxmox_download_file" "rocky_linux_10_iso" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name = "pve3"
-  url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.2-x86_64-minimal.iso"
-
-  file_name = "rocky_linux_10.iso"
-  overwrite = true
-}
-
-resource "proxmox_download_file" "rocky_linux_9_iso" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name = "pve3"
-  url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.8-x86_64-minimal.iso"
-
-  file_name = "rocky_linux_9.iso"
-  overwrite = true
-}
-
-resource "proxmox_download_file" "rocky_linux_8_iso" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name = "pve3"
-  url = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.10-x86_64-minimal.iso"
-
-  file_name = "rocky_linux_8.iso"
   overwrite = true
 }
 
