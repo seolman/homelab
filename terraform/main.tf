@@ -13,7 +13,7 @@ resource "proxmox_node_config" "pve3_note" {
 resource "proxmox_virtual_environment_group" "admin_group" {
   group_id = "admin"
 
-  comment = "managed by terraform"
+  comment = local.common_description
 }
 
 resource "proxmox_acl" "admin_acl" {
@@ -27,7 +27,7 @@ resource "proxmox_acl" "admin_acl" {
 resource "proxmox_virtual_environment_user" "seolman_user" {
   user_id  = "seolman@pve"
 
-  comment = "managed by terraform"
+  comment = local.common_description
   email = "tjfehdgns@gmail.com"
   enabled = true
   groups = [proxmox_virtual_environment_group.admin_group.group_id]
@@ -124,13 +124,9 @@ resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
   overwrite = true
 }
 
-# TODO
 # resource "proxmox_virtual_environment_vm" "test_vm" {
 #   node_name = "pve3"
 #
-#   agent {
-#     enabled = true
-#   }
 # }
 
 # TODO pbs
@@ -145,7 +141,7 @@ resource "oci_identity_compartment" "homelab_prd_compartment" {
   provider = oci.osaka
   compartment_id = var.oci_tenancy_ocid
   name = "homelab-prd"
-  description = "managed by terraform"
+  description = local.common_description
 
   freeform_tags = local.common_tags
 }
