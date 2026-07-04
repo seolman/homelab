@@ -127,6 +127,27 @@ resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
 # resource "proxmox_virtual_environment_vm" "test_vm" {
 #   node_name = "pve3"
 #
+#   agent {
+#     enabled = true
+#   }
+#   bios = "ovmf"
+#   # TODO
+#   cpu {
+#     cores = 1
+#     sockets = 1
+#     type = "x86-64-v3"
+#   }
+#   disk {
+#     interface = "scsi0"
+#
+#     file_id = proxmox_download_file.rocky_linux_10_qcow2_img.id
+#   }
+#   efi_disk {
+#     datastore_id = "local-lvm"
+#     pre_enrolled_keys = false
+#   }
+#   initialization {
+#   }
 # }
 
 # TODO pbs
