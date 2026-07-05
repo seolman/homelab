@@ -7,7 +7,7 @@ resource "proxmox_node_config" "pve3_note" {
   description = trimspace(<<-EOT
   # Backup Node
   EOT
-  )
+)
 }
 
 resource "proxmox_virtual_environment_group" "admin_group" {
@@ -150,8 +150,10 @@ resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
 #   }
 # }
 
+# TODO object storage vm
 # TODO pbs
 # TODO pms
+
 
 # INFO oci
 data "oci_identity_availability_domains" "seoul_ads" {
