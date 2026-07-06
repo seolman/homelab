@@ -154,7 +154,6 @@ resource "proxmox_download_file" "rocky_linux_8_qcow2_img" {
 # TODO pbs
 # TODO pms
 
-
 # INFO oci
 data "oci_identity_availability_domains" "seoul_ads" {
   compartment_id = var.oci_tenancy_ocid
