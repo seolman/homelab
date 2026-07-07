@@ -219,8 +219,8 @@ resource "oci_core_instance" "homelab_prd_vm" {
   display_name = "homelab-prd-vm"
   shape = local.oci_instance_shape
   shape_config {
-    ocpus = 4
-    memory_in_gbs = 24
+    ocpus = 2
+    memory_in_gbs = 12
   }
   source_details {
     source_type = "image"
