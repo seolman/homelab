@@ -172,7 +172,6 @@ data "oci_objectstorage_namespace" "homelab_dev_ns" {
   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
 }
 
-
 resource "oci_core_vcn" "homelab_dev_vcn" {
   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
   cidr_blocks = [ "192.168.0.0/16" ]
@@ -217,71 +216,55 @@ resource "oci_core_subnet" "homelab_dev_pubsub" {
   freeform_tags = local.common_tags
 }
 
-resource "oci_objectstorage_bucket" "homelab_dev_oci_bucket" {
+resource "oci_core_instance" "homelab_dev_vm_1" {
+  availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
-  name = "homelab-dev-oci-bucket"
-  namespace = data.oci_objectstorage_namespace.homelab_dev_ns.namespace
 
-  access_type = "NoPublicAccess"
-  bucket_scope = "REGION"
+  display_name = "homelab-dev-vm-1"
+  shape = local.oci_instance_shape
+  shape_config {
+    ocpus = 1
+    memory_in_gbs = 6
+  }
+  source_details {
+    source_type = "image"
+    source_id = local.oci_ubuntu_24_04_aarch_source_id
+    boot_volume_size_in_gbs = 100
+  }
+  create_vnic_details {
+    subnet_id = oci_core_subnet.homelab_dev_pubsub.id
+    assign_public_ip = true
+  }
+  metadata = {
+    ssh_authorized_keys = var.my_public_key
+  }
   freeform_tags = local.common_tags
 }
 
-# TODO curl -L --create-dirs -o 
-# resource "oci_objectstorage_object" "debian_qcow2_file" {
-#   bucket = oci_objectstorage_bucket.debian_bucket.name
-#   namespace = data.oci_objectstorage_namespace.homelab_dev_ns.namespace
-#   object = "debian-12-genericcloud-arm64.qcow2"
-#
-#   source_uri_details {
-#     bucket = ""
-#     region = ""
-#     object = ""
-#     namespace = ""
-#   }
-# }
+resource "oci_core_instance" "homelab_dev_vm_2" {
+  availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
 
-# resource "oci_core_image" "homelab_dev_debian_12_arm64_oci_img" {
-#   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
-#
-#   display_name = "Debian 12 (ARM64)"
-#   freeform_tags = local.common_tags
-#   image_source_details {
-#     source_type = "objectStorageUri" # TODO
-#
-#     operating_system = "Debian"
-#     operating_system_version = "12"
-#     source_image_type = "QCOW2"
-#     source_uri = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-arm64.qcow2" # TODO
-#   }
-#   launch_mode = "PARAVIRTUALIZED"
-# }
-
-# TODO debian 12 vm
-# resource "oci_core_instance" "homelab_dev_vm_1" {
-#   availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
-#   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
-#
-#   display_name = "homelab-dev-vm-1"
-#   shape = local.oci_instance_shape
-#   shape_config {
-#     ocpus = 1
-#     memory_in_gbs = 6
-#   }
-#   source_details {
-#     source_type = "image"
-#     source_id = local.oci_rocky_linux_9_aarch_source_id
-#     boot_volume_size_in_gbs = 200
-#   }
-#   create_vnic_details {
-#     subnet_id = oci_core_subnet.homelab_dev_pubsub.id
-#     assign_public_ip = true
-#   }
-#   metadata = {
-#     ssh_authorized_keys = var.my_public_key
-#   }
-#   freeform_tags = local.common_tags
-# }
+  display_name = "homelab-dev-vm-2"
+  shape = local.oci_instance_shape
+  shape_config {
+    ocpus = 1
+    memory_in_gbs = 6
+  }
+  source_details {
+    source_type = "image"
+    source_id = local.oci_ubuntu_24_04_aarch_source_id
+    boot_volume_size_in_gbs = 100
+  }
+  create_vnic_details {
+    subnet_id = oci_core_subnet.homelab_dev_pubsub.id
+    assign_public_ip = true
+  }
+  metadata = {
+    ssh_authorized_keys = var.my_public_key
+  }
+  freeform_tags = local.common_tags
+}
 
 # INFO b2
 data "b2_account_info" "my_account_info" {}
