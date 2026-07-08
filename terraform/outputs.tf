@@ -8,9 +8,9 @@ output "data_oci_availability_domains" {
   value = data.oci_identity_availability_domains.seoul_ads.availability_domains
 }
 
-output "oci_instance_public_ip" {
-  value = oci_core_instance.homelab_prd_vm.public_ip
-}
+# output "oci_instance_public_ip" {
+#   value = oci_core_instance.homelab_prd_vm.public_ip
+# }
 
 output "data_b2_account_info" {
   value = {
