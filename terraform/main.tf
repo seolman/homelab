@@ -237,6 +237,7 @@ resource "oci_core_instance" "homelab_dev_vm_1" {
   }
   metadata = {
     ssh_authorized_keys = var.my_public_key
+    # TODO cloud-init
   }
   freeform_tags = local.common_tags
 }
@@ -262,6 +263,7 @@ resource "oci_core_instance" "homelab_dev_vm_2" {
   }
   metadata = {
     ssh_authorized_keys = var.my_public_key
+    # TODO cloud-init
   }
   freeform_tags = local.common_tags
 }
