@@ -159,83 +159,129 @@ data "oci_identity_availability_domains" "seoul_ads" {
   compartment_id = var.oci_tenancy_ocid
 }
 
-resource "oci_identity_compartment" "homelab_prd_compartment" {
+resource "oci_identity_compartment" "homelab_dev_compartment" {
   provider = oci.osaka
   compartment_id = var.oci_tenancy_ocid
-  name = "homelab-prd"
+  name = "homelab-dev"
   description = local.common_description
 
   freeform_tags = local.common_tags
 }
 
-resource "oci_core_vcn" "homelab_prd_vcn" {
-  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
+data "oci_objectstorage_namespace" "homelab_dev_ns" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+}
+
+
+resource "oci_core_vcn" "homelab_dev_vcn" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
   cidr_blocks = [ "192.168.0.0/16" ]
 
-  display_name = "homelab-prd-vcn"
+  display_name = "homelab-dev-vcn"
   dns_label = "homelab"
   freeform_tags = local.common_tags
 }
 
-resource "oci_core_internet_gateway" "homelab_prd_igw" {
-  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
-  vcn_id = oci_core_vcn.homelab_prd_vcn.id
+resource "oci_core_internet_gateway" "homelab_dev_igw" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+  vcn_id = oci_core_vcn.homelab_dev_vcn.id
 
-  display_name = "homelab-prd-igw"
+  display_name = "homelab-dev-igw"
   enabled = true
   freeform_tags = local.common_tags
 }
 
-resource "oci_core_route_table" "homelab_prd_rt" {
-  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
-  vcn_id = oci_core_vcn.homelab_prd_vcn.id
+resource "oci_core_route_table" "homelab_dev_rt" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+  vcn_id = oci_core_vcn.homelab_dev_vcn.id
 
-  display_name = "homelab-prd-rt"
+  display_name = "homelab-dev-rt"
   freeform_tags = local.common_tags
   route_rules {
     destination = "0.0.0.0/0"
     destination_type = "CIDR_BLOCK"
-    network_entity_id = oci_core_internet_gateway.homelab_prd_igw.id
+    network_entity_id = oci_core_internet_gateway.homelab_dev_igw.id
   }
 }
 
-resource "oci_core_subnet" "homelab_prd_pubsub" {
+resource "oci_core_subnet" "homelab_dev_pubsub" {
   cidr_block = "192.168.5.0/24"
-  vcn_id = oci_core_vcn.homelab_prd_vcn.id
+  vcn_id = oci_core_vcn.homelab_dev_vcn.id
 
-  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
-  dhcp_options_id = oci_core_vcn.homelab_prd_vcn.default_dhcp_options_id
-  display_name = "homelab-prd-pubsub"
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+  dhcp_options_id = oci_core_vcn.homelab_dev_vcn.default_dhcp_options_id
+  display_name = "homelab-dev-pubsub"
   dns_label = "pubsub"
-  security_list_ids = [oci_core_vcn.homelab_prd_vcn.default_security_list_id]
-  route_table_id = oci_core_route_table.homelab_prd_rt.id
+  security_list_ids = [oci_core_vcn.homelab_dev_vcn.default_security_list_id]
+  route_table_id = oci_core_route_table.homelab_dev_rt.id
   freeform_tags = local.common_tags
 }
 
-resource "oci_core_instance" "homelab_prd_vm" {
-  availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
-  compartment_id = oci_identity_compartment.homelab_prd_compartment.id
+resource "oci_objectstorage_bucket" "homelab_dev_oci_bucket" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+  name = "homelab-dev-oci-bucket"
+  namespace = data.oci_objectstorage_namespace.homelab_dev_ns.namespace
 
-  display_name = "homelab-prd-vm"
-  shape = local.oci_instance_shape
-  shape_config {
-    ocpus = 2
-    memory_in_gbs = 12
-  }
-  source_details {
-    source_type = "image"
-    source_id = local.oci_rocky_linux_9_aarch_source_id
-    boot_volume_size_in_gbs = 200
-  }
-  create_vnic_details {
-    subnet_id = oci_core_subnet.homelab_prd_pubsub.id
-    assign_public_ip = true
-  }
-  metadata = {
-    ssh_authorized_keys = var.my_public_key
-  }
+  access_type = "NoPublicAccess"
+  bucket_scope = "REGION"
   freeform_tags = local.common_tags
 }
+
+# TODO curl -L --create-dirs -o 
+# resource "oci_objectstorage_object" "debian_qcow2_file" {
+#   bucket = oci_objectstorage_bucket.debian_bucket.name
+#   namespace = data.oci_objectstorage_namespace.homelab_dev_ns.namespace
+#   object = "debian-12-genericcloud-arm64.qcow2"
+#
+#   source_uri_details {
+#     bucket = ""
+#     region = ""
+#     object = ""
+#     namespace = ""
+#   }
+# }
+
+# resource "oci_core_image" "homelab_dev_debian_12_arm64_oci_img" {
+#   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+#
+#   display_name = "Debian 12 (ARM64)"
+#   freeform_tags = local.common_tags
+#   image_source_details {
+#     source_type = "objectStorageUri" # TODO
+#
+#     operating_system = "Debian"
+#     operating_system_version = "12"
+#     source_image_type = "QCOW2"
+#     source_uri = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-arm64.qcow2" # TODO
+#   }
+#   launch_mode = "PARAVIRTUALIZED"
+# }
+
+# TODO debian 12 vm
+# resource "oci_core_instance" "homelab_dev_vm_1" {
+#   availability_domain = data.oci_identity_availability_domains.seoul_ads.availability_domains[0].name
+#   compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+#
+#   display_name = "homelab-dev-vm-1"
+#   shape = local.oci_instance_shape
+#   shape_config {
+#     ocpus = 1
+#     memory_in_gbs = 6
+#   }
+#   source_details {
+#     source_type = "image"
+#     source_id = local.oci_rocky_linux_9_aarch_source_id
+#     boot_volume_size_in_gbs = 200
+#   }
+#   create_vnic_details {
+#     subnet_id = oci_core_subnet.homelab_dev_pubsub.id
+#     assign_public_ip = true
+#   }
+#   metadata = {
+#     ssh_authorized_keys = var.my_public_key
+#   }
+#   freeform_tags = local.common_tags
+# }
 
 # INFO b2
 data "b2_account_info" "my_account_info" {}
@@ -245,7 +291,11 @@ resource "b2_bucket" "dr_bucket" {
   bucket_type = "allPrivate"
 
   # INFO need to change naming
-  bucket_info = local.common_tags
+  bucket_info = {
+    project = "homelab"
+    environment = "production"
+    managedby = "terraform"
+  }
   # cors_rules {}
   default_server_side_encryption {
     algorithm = "AES256"
