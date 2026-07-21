@@ -17,12 +17,12 @@
   roles:
     - k3s_worker
 
-- name: Bootstrap add-ons
-  hosts: k3s_masters
-  become: false
-  gather_facts: false
-  roles:
-    - argocd
+# - name: Bootstrap add-ons
+#   hosts: k3s_masters
+#   become: false
+#   gather_facts: false
+#   roles:
+    # - argocd
     # - metallb
     # - longhorn
     # - traefik
