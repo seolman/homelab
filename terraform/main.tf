@@ -203,6 +203,35 @@ resource "oci_core_route_table" "homelab_dev_rt" {
   }
 }
 
+resource "oci_core_security_list" "homelab_dev_sl" {
+  compartment_id = oci_identity_compartment.homelab_dev_compartment.id
+  vcn_id = oci_core_vcn.homelab_dev_vcn.id
+  display_name = "homelab-dev-security-list"
+  freeform_tags = local.common_tags
+
+  egress_security_rules {
+    destination = "0.0.0.0/0"
+    protocol = "all"
+    stateless = false
+  }
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless = false
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+  ingress_security_rules {
+    protocol = "all"
+    source = "192.168.5.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless = false
+  }
+}
+
 resource "oci_core_subnet" "homelab_dev_pubsub" {
   cidr_block = "192.168.5.0/24"
   vcn_id = oci_core_vcn.homelab_dev_vcn.id
@@ -211,7 +240,7 @@ resource "oci_core_subnet" "homelab_dev_pubsub" {
   dhcp_options_id = oci_core_vcn.homelab_dev_vcn.default_dhcp_options_id
   display_name = "homelab-dev-pubsub"
   dns_label = "pubsub"
-  security_list_ids = [oci_core_vcn.homelab_dev_vcn.default_security_list_id]
+  security_list_ids = [oci_core_security_list.homelab_dev_sl.id]
   route_table_id = oci_core_route_table.homelab_dev_rt.id
   freeform_tags = local.common_tags
 }
