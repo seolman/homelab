@@ -1,6 +1,0 @@
----
-- name: Apply common configuration to all servers
-  hosts: all
-  become: true
-  roles:
-    - common
